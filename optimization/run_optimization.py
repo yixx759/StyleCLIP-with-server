@@ -100,7 +100,7 @@ def main(args):
 
             img_orig, gr = g_ema([new], input_is_latent=True, randomize_noise=False)
         print(gr.size())
-        torch.save(gr, "./data/ffhq/latents.pt")
+        torch.save(gr, args.latent_dir)
 
 
         #final_result = torch.cat([img_orig, img_gen])
@@ -133,11 +133,12 @@ if __name__ == "__main__":
                                                                       "not provided")
     parser.add_argument("--save_intermediate_image_every", type=int, default=0, help="if > 0 then saves intermidate results during the optimization")
     parser.add_argument("--results_dir", type=str, default="results")
-
+    parser.add_argument("--latent_dir", type=str, default="./data/ffhq/latents.pt")
+    parser.add_argument("--photo_dir", type=str, default="0.jpg")
     args = parser.parse_args()
 
     result_image = main(args)
 
-    torchvision.utils.save_image(result_image.detach().cpu(), os.path.join(args.results_dir, "final_result.jpg"), normalize=True, scale_each=True, range=(-1, 1))
+    torchvision.utils.save_image(result_image.detach().cpu(), os.path.join(args.results_dir, args.photo_dir), normalize=True, scale_each=True, range=(-1, 1))
 
 
